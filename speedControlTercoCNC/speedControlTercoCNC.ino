@@ -10,9 +10,9 @@ void setup() {
 }
 
 void loop() {
+  startTime = millis();
   pulses = 0;   // reset cycle counter
   while( millis()-startTime >= 100 ) {}
-  startTime = millis();
   int rps = (pulses/ppr)*10;      // revolutions per second
   int rpm = rps * 60;             // revolutions per minute
   Serial.println(rpm);
