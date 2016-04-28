@@ -19,26 +19,39 @@
 //
 //========================================
 
-const byte interruptPin = 2;
+const byte interruptPin = 0;
 volatile int pulses = 0;
 int ppr = 4;    //pulses per revolution
-int startTime = 0;
+
+void counter() {
+  pulses++;
+}
 
 void setup() {
   pinMode(interruptPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(interruptPin), counter, RISING);
+  attachInterrupt(0, counter, RISING);
+  //sei();
   Serial.begin(9600);
 }
 
 void loop() {
+  unsigned int startTime;
+  unsigned int testTime;
+  
   startTime = millis();
   pulses = 0;   // reset cycle counter
-  while( millis()-startTime >= 100 ) {}
-  int rps = (pulses/ppr)*10;      // revolutions per second
-  int rpm = rps * 60;             // revolutions per minute
-  Serial.println(rpm);
-}
-
-void counter() {
-  pulses++;
+  while(1) {
+    testTime = millis();
+    /*Serial.print("starttime");
+    Serial.print(startTime);
+    Serial.print("testtime");
+    Serial.println(testTime);*/
+    if(testTime - startTime >= 100) {
+      int rps = (pulses/ppr)*10;      // revolutions per second
+      int rpm = rps * 60;             // revolutions per minute
+      Serial.println(rpm);
+      Serial.println(pulses);
+      break;
+    }
+  }
 }
