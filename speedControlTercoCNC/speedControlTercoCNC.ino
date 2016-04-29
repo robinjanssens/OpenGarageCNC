@@ -44,7 +44,7 @@ void loop() {
   while(1) {
     testTime = millis();
     if(testTime - startTime >= sampleTime) {
-      rpm = (pulses / ppr) * 10 * 60;           // revolutions per minute
+      rpm = (pulses / ppr) * (1000 / sampleTime) * 60; // revolutions per minute
       Serial.println(rpm);
       Serial.println(pulses);
       break;
