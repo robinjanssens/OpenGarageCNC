@@ -19,6 +19,14 @@
 //
 //========================================
 
+// Missing in version 1.0.5
+#ifndef NOT_AN_INTERRUPT
+#define NOT_AN_INTERRUPT -1
+#endif
+#ifndef digitalPinToInterrupt
+#define digitalPinToInterrupt(p)  ((p) == 2 ? 0 : ((p) == 3 ? 1 : NOT_AN_INTERRUPT))
+#endif
+
 const byte interruptPin = 2;
 const float ppr = 4.0;                          // pulses per revolution
 const int sampleTime = 100;                     // count for this amount of ms
