@@ -28,9 +28,9 @@
 #endif
 
 const byte interruptPin = 2;
-const float ppr = 4.0;                          // pulses per revolution
-const int sampleTime = 100;                     // count for this amount of ms
-volatile int pulses = 0;
+const unsigned int ppr = 4;                     // pulses per revolution
+const unsigned int sampleTime = 100;            // count for this amount of ms
+volatile unsigned int pulses = 0;
 
 void counter() {
   pulses++;
@@ -45,14 +45,14 @@ void setup() {
 void loop() {
   unsigned long startTime;
   unsigned long testTime;
-  float rpm;
+  unsigned int rpm;
   
   startTime = millis();
   pulses = 0;                                   // reset pulse counter
   while(1) {
     testTime = millis();
     if(testTime - startTime >= sampleTime) {
-      rpm = (pulses / ppr) * (1000 / sampleTime) * 60; // revolutions per minute
+      rpm = pulses * ((1000 / sampleTime) * 60 / ppr); // revolutions per minute
       Serial.println(rpm);
       Serial.println(pulses);
       break;
