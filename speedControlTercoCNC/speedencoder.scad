@@ -19,11 +19,11 @@
 //
 //========================================
 
-thickness=3;
-holeradius=3.9;
+thickness=1;
+holeradius=4;
 innerradius=15;
 outerradius=25;
-nrpulses=6;
+nrpulses=12;
 
 fillangle=360/nrpulses/2;
 spacing=0.1;
