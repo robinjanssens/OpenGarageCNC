@@ -7,6 +7,11 @@ Wiki
 Additional information can be found on the following page:<br>
 [Terco 45 | Open Garage Wiki](http://wiki.opengarage.org/index.php/Terco_45)
 
+Libraries
+---------
+
+http://hmario.home.xs4all.nl/arduino/LiquidCrystal_I2C/
+
 License
 -------
 
