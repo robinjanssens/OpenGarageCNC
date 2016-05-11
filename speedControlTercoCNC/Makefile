@@ -14,9 +14,12 @@ ARDUINO_CORE_PATH = $(ARDUINO_DIR)/hardware/arduino/cores/arduino
 ARDUINO_VAR_PATH = $(ARDUINO_DIR)/hardware/arduino/variants/standard
 ARDUINO_LIBS_PATH = $(ARDUINO_DIR)/libraries
 
-ARDUINO_LIBS = 
+ARDUINO_LIBS = \
+	Wire \
+	Wire/utility
 
-LOCAL_LIBS = 
+LOCAL_LIBS = \
+	LiquidCrystal_I2C
 
 ########################################################################
 # Do not print commands override with make Q=
@@ -234,7 +237,7 @@ $(BUILDDIR)/%.eep: $(BUILDDIR)/%.elf
 
 $(TARGET_ELF): $(CORE_LIB) $(SYSLIB_LIB) $(LIBS_LIB) $(LOCAL_OBJS)
 	@$(ECHO) "[  LNK  ] ==> $@"
-	$(Q)$(CC) $(LDFLAGS) -o $@ $(LOCAL_OBJS) -l$(SYSLIB_NAME) -l$(LIBS_NAME) -l$(CORE_NAME) -L$(BUILDDIR) -Wl,-Map=linker.map
+	$(Q)$(CC) $(LDFLAGS) -o $@ $(LOCAL_OBJS) -l$(LIBS_NAME) -l$(SYSLIB_NAME) -l$(CORE_NAME) -L$(BUILDDIR) -Wl,-Map=linker.map
 	$(Q)$(SIZE) $@
 
 ########################################################################
