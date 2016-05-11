@@ -19,6 +19,9 @@
 //
 //========================================
 
+#include <Wire.h> 
+#include <LiquidCrystal_I2C.h>
+
 // Missing in version 1.0.5
 #ifndef NOT_AN_INTERRUPT
 #define NOT_AN_INTERRUPT -1
@@ -32,6 +35,8 @@ const unsigned int ppr = 24;                     // pulses per revolution
 const unsigned int sampleTime = 100;            // count for this amount of ms
 volatile unsigned int pulses = 0;
 
+LiquidCrystal_I2C lcd(0x20, 16, 2);
+
 void counter() {
   pulses++;
 }
@@ -40,12 +45,15 @@ void setup() {
   pinMode(interruptPin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(interruptPin), counter, CHANGE);
   Serial.begin(9600);
+  lcd.init();
+  lcd.backlight();
 }
 
 void loop() {
   unsigned long startTime;
   unsigned long testTime;
   unsigned int rpm;
+  char buffer[16];
   
   startTime = millis();
   pulses = 0;                                   // reset pulse counter
@@ -55,6 +63,12 @@ void loop() {
       rpm = pulses * ((1000 / sampleTime) * 60 / ppr); // revolutions per minute
       Serial.println(rpm);
       Serial.println(pulses);
+      lcd.home();
+      sprintf(buffer, "%4d RPM", rpm);
+      lcd.print(buffer);
+      lcd.setCursor(0, 1);
+      sprintf(buffer, "%4d PULSES", pulses);
+      lcd.print(buffer);
       break;
     }
   }
