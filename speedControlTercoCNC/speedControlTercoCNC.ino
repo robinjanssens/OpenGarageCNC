@@ -31,8 +31,12 @@
 #endif
 
 const byte interruptPin = 2;
-const unsigned int ppr = 24;                     // pulses per revolution
+const unsigned int ppr = 24;                    // pulses per revolution
 const unsigned int sampleTime = 100;            // count for this amount of ms
+const byte numberOfSamples = 10;
+unsigned int averageArray[numberOfSamples];
+byte sampleCounter = 0;
+
 volatile unsigned int pulses = 0;
 
 LiquidCrystal_I2C lcd(0x20, 16, 2);
@@ -53,6 +57,8 @@ void loop() {
   unsigned long startTime;
   unsigned long testTime;
   unsigned int rpm;
+  unsigned int totalrpm;
+  unsigned int averagerpm;
   char buffer[16];
   
   startTime = millis();
@@ -61,10 +67,19 @@ void loop() {
     testTime = millis();
     if(testTime - startTime >= sampleTime) {
       rpm = pulses * ((1000 / sampleTime) * 60 / ppr); // revolutions per minute
-      Serial.println(rpm);
+      averageArray[sampleCounter++] = rpm;
+      if(sampleCounter >= numberOfSamples) {
+          sampleCounter = 0;
+      }
+      totalrpm = 0;
+      for(int i = 0; i < numberOfSamples; i++) {
+          totalrpm += averageArray[i];
+      }
+      averagerpm = totalrpm / numberOfSamples;
+      Serial.println(averagerpm);
       Serial.println(pulses);
       lcd.home();
-      sprintf(buffer, "%4d RPM", rpm);
+      sprintf(buffer, "%4d RPM", averagerpm);
       lcd.print(buffer);
       lcd.setCursor(0, 1);
       sprintf(buffer, "%4d PULSES", pulses);
