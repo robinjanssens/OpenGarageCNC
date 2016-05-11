@@ -28,7 +28,7 @@
 #endif
 
 const byte interruptPin = 2;
-const unsigned int ppr = 4;                     // pulses per revolution
+const unsigned int ppr = 24;                     // pulses per revolution
 const unsigned int sampleTime = 100;            // count for this amount of ms
 volatile unsigned int pulses = 0;
 
@@ -38,7 +38,7 @@ void counter() {
 
 void setup() {
   pinMode(interruptPin, INPUT_PULLUP);
-  attachInterrupt(digitalPinToInterrupt(interruptPin), counter, RISING);
+  attachInterrupt(digitalPinToInterrupt(interruptPin), counter, CHANGE);
   Serial.begin(9600);
 }
 
